@@ -6,11 +6,15 @@ plugins {
 	kotlin("jvm") version "1.2.71"
 	kotlin("plugin.spring") version "1.2.71"
 	kotlin("plugin.jpa") version "1.2.71"
+  id("org.flywaydb.flyway") version "5.2.4"
 }
 
 group = "fi.vamk"
 version = "1.0.0"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
+flyway.url = "jdbc:postgresql://localhost:5432/vabanque"
+flyway.user = "postgres"
+flyway.password = "zaq1@WSX"
 
 val developmentOnly by configurations.creating
 configurations {
@@ -33,7 +37,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	runtimeOnly("org.postgresql:postgresql")
+	compile("org.postgresql:postgresql")
   testImplementation("org.springframework:spring-test")
   testImplementation("org.springframework.boot:spring-boot-test")
   testImplementation("org.springframework.boot:spring-boot-test-autoconfigure")
