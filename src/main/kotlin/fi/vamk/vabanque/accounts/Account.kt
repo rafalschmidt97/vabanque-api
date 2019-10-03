@@ -10,18 +10,20 @@ data class Account(
   @Column(nullable = false, length = 50, unique = true)
   var email: String,
 
-  @Column(nullable = false, length = 50)
+  @Column(nullable = false, length = 60)
   var password: String,
 
   @Column(length = 50, unique = true)
   var nickname: String? = null,
 
-  @Column(length = 50)
+  @Column(length = 30)
   var phoneNumber: String? = null,
 
   @Column(length = 2048)
   var avatar: String? = null
 ) {
+  constructor(email: String, password: String) : this(id = 0, email = email, password = password)
+
   fun update(nickname: String, phoneNumber: String, avatar: String) {
     this.nickname = nickname
     this.phoneNumber = phoneNumber

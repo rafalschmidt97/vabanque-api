@@ -1,12 +1,13 @@
 package fi.vamk.vabanque.accounts
 
+import fi.vamk.vabanque.core.auth.security.SecurityController
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("accounts")
 class AccountsController(
-  private val accountsService: AccountsService) {
+  private val accountsService: AccountsService) : SecurityController() {
 
   @GetMapping("{accountId}")
   fun findById(@PathVariable accountId: Long): AccountResponse {
@@ -15,8 +16,7 @@ class AccountsController(
 
   @GetMapping("self")
   fun findSelf(): SelfAccountResponse {
-    val accountId = 1L // TODO: get id from context
-    return accountsService.findSelfById(accountId)
+    return accountsService.findSelfById(accountId())
   }
 
   @GetMapping("search")
@@ -26,8 +26,7 @@ class AccountsController(
 
   @PutMapping("self")
   fun updateSelf(@Valid @RequestBody request: AccountRequest) {
-    val accountId = 1L // TODO: get id from context
-    request.id = accountId
+    request.id = accountId()
     return accountsService.update(request)
   }
 }
