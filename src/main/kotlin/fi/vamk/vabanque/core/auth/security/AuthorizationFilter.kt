@@ -10,7 +10,6 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
 class AuthorizationFilter(
   authenticationManager: AuthenticationManager,
   private val tokenService: TokenService) : BasicAuthenticationFilter(authenticationManager) {
@@ -33,7 +32,7 @@ class AuthorizationFilter(
       val user = SecurityAccount(accountId)
       return UsernamePasswordAuthenticationToken(user, null, user.authorities)
     }
+
     throw UsernameNotFoundException("Unauthorized")
   }
-
 }
