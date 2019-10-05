@@ -1,11 +1,13 @@
 package fi.vamk.vabanque.accounts
 
 import fi.vamk.vabanque.core.auth.security.SecurityController
+import io.swagger.annotations.Api
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("accounts")
+@Api(tags = ["Accounts"])
 class AccountsController(
   private val accountsService: AccountsService) : SecurityController() {
 

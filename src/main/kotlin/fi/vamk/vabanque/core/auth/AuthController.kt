@@ -2,6 +2,7 @@ package fi.vamk.vabanque.core.auth
 
 import fi.vamk.vabanque.core.auth.security.SecurityController
 import fi.vamk.vabanque.core.auth.token.TokenResponse
+import io.swagger.annotations.Api
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -10,6 +11,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("auth")
+@Api(tags = ["Auth"])
 class AuthController(
   private val authService: AuthService) : SecurityController() {
 
@@ -36,5 +38,12 @@ class AuthController(
   @PostMapping("logout/all")
   fun logoutAll() {
     return authService.logoutAllDevices(accountId())
+  }
+
+  companion object {
+    val ignoredPathsInAuth = arrayOf(
+      "/auth/sign-in",
+      "/auth/sign-up",
+      "/auth/refresh")
   }
 }
