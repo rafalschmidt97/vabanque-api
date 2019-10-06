@@ -1,6 +1,8 @@
 This repository is a part of **VaBanque** project for [VAMK University](http://puv.fi/).
 
-Created with Kotlin and Spring Boot. Client is available [here](https://github.com/rafalschmidt97/vabanque-client).  
+Created with Kotlin and Spring Boot. Client is available [here](https://github.com/rafalschmidt97/vabanque-client).
+
+[![Build Status](https://travis-ci.com/rafalschmidt97/vabanque-api.svg?branch=master)](https://travis-ci.com/rafalschmidt97/vabanque-api)  
 
 ## Contributing guidelines
 
