@@ -1,18 +1,19 @@
 package fi.vamk.vabanque.core.auth.security
 
 import fi.vamk.vabanque.core.auth.token.TokenService
+import javax.servlet.FilterChain
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import javax.servlet.FilterChain
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 class AuthorizationFilter(
   authenticationManager: AuthenticationManager,
-  private val tokenService: TokenService) : BasicAuthenticationFilter(authenticationManager) {
+  private val tokenService: TokenService
+) : BasicAuthenticationFilter(authenticationManager) {
 
   override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
     val header = request.getHeader("Authorization")

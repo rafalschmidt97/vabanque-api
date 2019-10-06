@@ -1,9 +1,10 @@
 package fi.vamk.vabanque.common.utilities
 
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 fun getDate(field: Int, amount: Int): Date {
   val calendar = Calendar.getInstance()
-  calendar.add(Calendar.YEAR, 2)
+  calendar.add(field, amount)
   return calendar.time
 }

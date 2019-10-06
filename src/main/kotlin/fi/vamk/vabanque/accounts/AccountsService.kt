@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class AccountsService(
-  private val accountsRepository: AccountsRepository) {
+  private val accountsRepository: AccountsRepository
+) {
 
   fun findById(id: Long): AccountResponse {
     return accountsRepository.findById(id)?.toResponse()

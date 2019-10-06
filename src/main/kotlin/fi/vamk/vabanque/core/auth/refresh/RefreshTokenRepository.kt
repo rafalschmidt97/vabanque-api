@@ -1,7 +1,7 @@
 package fi.vamk.vabanque.core.auth.refresh
 
-import org.springframework.data.repository.Repository
 import javax.transaction.Transactional
+import org.springframework.data.repository.Repository
 
 interface RefreshTokenRepository : Repository<RefreshToken, Long> {
   fun findByToken(token: String): RefreshToken?
