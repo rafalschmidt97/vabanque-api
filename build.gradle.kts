@@ -4,30 +4,18 @@ group = "fi.vamk"
 version = "1.0.0"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
-flyway {
-  url = "jdbc:postgresql://localhost:5432/vabanque"
-  user = "postgres"
-  password = "zaq1@WSX"
-}
-
-val developmentOnly by configurations.creating
-configurations {
-  runtimeClasspath {
-    extendsFrom(developmentOnly)
-  }
-}
-
 repositories {
   mavenCentral()
+  maven { url = uri("https://repo.spring.io/milestone") }
   jcenter()
 }
 
 plugins {
-  id("org.springframework.boot") version "2.1.8.RELEASE"
+  id("org.springframework.boot") version "2.2.0.RC1"
   id("io.spring.dependency-management") version "1.0.8.RELEASE"
-  id("org.jetbrains.kotlin.jvm") version "1.2.71"
-  id("org.jetbrains.kotlin.plugin.spring") version "1.2.71"
-  id("org.jetbrains.kotlin.plugin.jpa") version "1.2.71"
+  id("org.jetbrains.kotlin.jvm") version "1.3.50"
+  id("org.jetbrains.kotlin.plugin.spring") version "1.3.50"
+  id("org.jetbrains.kotlin.plugin.jpa") version "1.3.50"
   id("org.flywaydb.flyway") version "6.0.4"
   id("org.jlleitschuh.gradle.ktlint") version "9.0.0"
 }
@@ -43,7 +31,6 @@ dependencies {
   implementation("io.jsonwebtoken:jjwt:0.+")
   implementation("io.springfox:springfox-swagger-ui:2.9.2")
   implementation("io.springfox:springfox-swagger2:2.9.2")
-  developmentOnly("org.springframework.boot:spring-boot-devtools")
   compile("org.postgresql:postgresql")
   testImplementation("org.springframework:spring-test")
   testImplementation("org.springframework.boot:spring-boot-test")
@@ -51,6 +38,12 @@ dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter:5.+")
   testImplementation("org.assertj:assertj-core:3.+")
   testImplementation("io.mockk:mockk:1.+")
+}
+
+flyway {
+  url = "jdbc:postgresql://localhost:5432/vabanque"
+  user = "postgres"
+  password = "zaq1@WSX"
 }
 
 tasks.test {
