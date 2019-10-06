@@ -25,10 +25,10 @@ repositories {
 plugins {
   id("org.springframework.boot") version "2.1.8.RELEASE"
   id("io.spring.dependency-management") version "1.0.8.RELEASE"
-  kotlin("jvm") version "1.2.71"
-  kotlin("plugin.spring") version "1.2.71"
-  kotlin("plugin.jpa") version "1.2.71"
-  id("org.flywaydb.flyway") version "5.2.4"
+  id("org.jetbrains.kotlin.jvm") version "1.2.71"
+  id("org.jetbrains.kotlin.plugin.spring") version "1.2.71"
+  id("org.jetbrains.kotlin.plugin.jpa") version "1.2.71"
+  id("org.flywaydb.flyway") version "6.0.4"
   id("org.jlleitschuh.gradle.ktlint") version "9.0.0"
 }
 
@@ -38,7 +38,6 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-websocket")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-  implementation("org.flywaydb:flyway-core")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
   implementation("io.jsonwebtoken:jjwt:0.+")
