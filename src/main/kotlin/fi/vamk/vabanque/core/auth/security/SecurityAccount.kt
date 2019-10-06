@@ -12,4 +12,3 @@ class SecurityAccount(val id: Long) : UserDetails {
   override fun isAccountNonExpired() = true
   override fun isAccountNonLocked() = true
 }
-

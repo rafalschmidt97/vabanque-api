@@ -9,16 +9,17 @@ import fi.vamk.vabanque.core.auth.refresh.RefreshToken
 import fi.vamk.vabanque.core.auth.refresh.RefreshTokenRepository
 import fi.vamk.vabanque.core.auth.token.TokenResponse
 import fi.vamk.vabanque.core.auth.token.TokenService
+import java.util.Calendar
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class AuthService(
   private val accountsRepository: AccountsRepository,
   private val refreshTokenRepository: RefreshTokenRepository,
   private val tokenService: TokenService,
-  private val passwordEncoder: PasswordEncoder) {
+  private val passwordEncoder: PasswordEncoder
+) {
 
   fun signIn(request: SignInRequest): TokenResponse {
     val account = accountsRepository.findByEmail(request.email)

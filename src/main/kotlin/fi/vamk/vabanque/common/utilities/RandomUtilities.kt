@@ -1,6 +1,6 @@
 package fi.vamk.vabanque.common.utilities
 
-import java.util.*
+import java.util.Base64
 
 fun getRandomAlfaNumeric(length: Int): String {
   val alphaNumeric = ('a'..'z') + ('A'..'Z') + ('0'..'9')

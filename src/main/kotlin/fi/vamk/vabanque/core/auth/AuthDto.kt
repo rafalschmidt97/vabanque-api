@@ -13,7 +13,8 @@ data class SignInRequest(
   val password: String
 )
 
-data class SignUpRequest( // TODO: use google/facebook for auth
+// TODO: use google/facebook for auth
+data class SignUpRequest(
   @NotBlank
   @Size(min = 3, max = 50)
   val email: String,
@@ -32,4 +33,3 @@ data class LogoutRequest(
   @NotBlank
   val refreshToken: String
 )
-
