@@ -33,3 +33,6 @@ out/
 ### System ###
 .DS_Store
 Thumbs.db
+
+### Upload ###
+/uploads
