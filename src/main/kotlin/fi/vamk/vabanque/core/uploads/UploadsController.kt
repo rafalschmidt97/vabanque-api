@@ -39,11 +39,11 @@ class UploadsController(
   }
 
   @PostMapping
-  fun store(file: MultipartFile?, request: HttpServletRequest): URL {
+  fun store(file: MultipartFile?, request: HttpServletRequest): UploadResponse {
     val name = uploadsService.store(file ?: throw BadRequestException("File cannot be empty."))
     val url = this.getBaseUrl(request) + "/uploads/" + name
 
-    return URL(url)
+    return UploadResponse(URL(url))
   }
 
   private fun getBaseUrl(request: HttpServletRequest): String {
