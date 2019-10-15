@@ -1,6 +1,7 @@
 package fi.vamk.vabanque.core.exceptions
 
 import fi.vamk.vabanque.common.exceptions.CustomException
+import fi.vamk.vabanque.common.exceptions.InternalServerErrorException
 import fi.vamk.vabanque.common.utilities.logger
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -10,10 +11,15 @@ import org.springframework.web.context.request.WebRequest
 
 @RestControllerAdvice
 class CustomExceptionHandler {
-  val logger by logger()
+  private val logger by logger()
 
   @ExceptionHandler(value = [(CustomException::class)])
   fun handleCustomException(exception: CustomException, request: WebRequest): ResponseEntity<ExceptionResponse> {
+    if (exception is InternalServerErrorException) {
+      logger.warning(exception.status.reasonPhrase)
+      exception.printStackTrace()
+    }
+
     return ResponseEntity(
       ExceptionResponse(
         exception.message ?: HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
