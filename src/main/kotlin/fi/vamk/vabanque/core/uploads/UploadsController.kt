@@ -1,5 +1,6 @@
 package fi.vamk.vabanque.core.uploads
 
+import fi.vamk.vabanque.common.exceptions.BadRequestException
 import fi.vamk.vabanque.core.auth.security.SecurityController
 import io.swagger.annotations.Api
 import java.net.URL
@@ -38,8 +39,8 @@ class UploadsController(
   }
 
   @PostMapping
-  fun store(file: MultipartFile, request: HttpServletRequest): URL {
-    val name = uploadsService.store(file)
+  fun store(file: MultipartFile?, request: HttpServletRequest): URL {
+    val name = uploadsService.store(file ?: throw BadRequestException("File cannot be empty."))
     val url = this.getBaseUrl(request) + "/uploads/" + name
 
     return URL(url)
