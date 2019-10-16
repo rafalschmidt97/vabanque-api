@@ -11,13 +11,18 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfiguration(private val tokenService: TokenService) : WebSecurityConfigurerAdapter() {
-
   override fun configure(http: HttpSecurity) {
-    http.csrf().disable().authorizeRequests()
+    http
+      .cors().and()
+      .csrf().disable()
+      .authorizeRequests()
       .antMatchers(
         *AuthController.ignoredPathsInAuth,
         *SwaggerConfiguration.ignoredPathsInAuth
@@ -31,5 +36,32 @@ class SecurityConfiguration(private val tokenService: TokenService) : WebSecurit
   @Bean
   fun passwordEncoder(): PasswordEncoder {
     return BCryptPasswordEncoder()
+  }
+
+  @Bean
+  fun corsConfigurationSource(): CorsConfigurationSource {
+    val configuration = CorsConfiguration()
+    configuration.allowedOrigins = listOf("*")
+    configuration.allowedMethods = listOf("POST", "PUT", "DELETE", "GET", "OPTIONS", "HEAD")
+    configuration.allowedHeaders = listOf(
+      "Authorization",
+      "Content-Type",
+      "X-Requested-With",
+      "Accept",
+      "Origin",
+      "Access-Control-Request-Method",
+      "Access-Control-Request-Headers"
+    )
+    configuration.exposedHeaders = listOf(
+      "Access-Control-Allow-Origin",
+      "Access-Control-Allow-Credentials",
+      "Authorization"
+    )
+    configuration.allowCredentials = true
+    configuration.maxAge = 3600
+
+    val source = UrlBasedCorsConfigurationSource()
+    source.registerCorsConfiguration("/**", configuration)
+    return source
   }
 }
