@@ -19,17 +19,21 @@ class AuthorizationFilter(
     val header = request.getHeader("Authorization")
 
     if (header != null && header.startsWith("Bearer")) {
-      val auth = getAuthentication(header)
+      val token = header.substring(7)
+      val auth = getAuthentication(token)
+      SecurityContextHolder.getContext().authentication = auth
+    } else if (request.parameterMap["access_token"] != null) {
+      val token = request.parameterMap["access_token"]?.get(0)!!
+      val auth = getAuthentication(token)
       SecurityContextHolder.getContext().authentication = auth
     }
 
     chain.doFilter(request, response)
   }
 
-  private fun getAuthentication(authorizationHeader: String): UsernamePasswordAuthenticationToken {
-    val token = authorizationHeader.substring(7)
-    if (tokenService.isValid(token)) {
-      val accountId = tokenService.getAccountId(token)
+  private fun getAuthentication(accessToken: String): UsernamePasswordAuthenticationToken {
+    if (tokenService.isValid(accessToken)) {
+      val accountId = tokenService.getAccountId(accessToken)
       val user = SecurityAccount(accountId)
       return UsernamePasswordAuthenticationToken(user, null, user.authorities)
     }

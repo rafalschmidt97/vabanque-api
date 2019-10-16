@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
+</head>
+
+<body>
+<div class="container py-3">
+  <div class="row">
+    <div class="col-9" id="messages">
+    </div>
+    <div class="col-3">
+      <ul id="accounts"></ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-9">
+      <input placeholder="Type a message..." type="text" class="form-control" id="input"/>
+    </div>
+    <div class="col-3">
+      <button type="button" class="btn btn-primary btn-block" id="send">
+        Send
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let accessToken = "";
+  while (accessToken === "") accessToken = prompt("Pass access token");
+  const socket = new SockJS(`http://localhost:8080/game?access_token=${accessToken}`);
+
+  socket.onmessage = (message) => {
+    actionHandler(JSON.parse(message.data))
+  };
+
+  socket.onclose = (error) => {
+    console.log(error);
+    console.log("Disconnected")
+  };
+
+  socket.onopen = () => {
+    console.log("Connected");
+    addAccount({id: "self"})
+  };
+
+  const accounts = [];
+
+  $("#send").click(() => {
+    sendAction("message", $("#input").val());
+  });
+
+  $("#input").keypress((e) => {
+    if (e.which === 13) {
+      sendAction("message", e.target.value);
+    }
+  });
+
+  function sendAction(type, payload) {
+    if (payload !== "") {
+      socket.send(JSON.stringify({type: type, payload: payload}));
+      $("#input").val("");
+      $("#input").focus();
+    }
+  }
+
+  function actionHandler(message) {
+    if (message.type === "accounts") {
+      message.payload.forEach((account) => {
+        addAccount(account);
+      });
+    } else if (message.type === "message") {
+      addMessage(message.payload)
+    } else if (message.type === "joined") {
+      addAccount(message.payload);
+    } else if (message.type === "left") {
+      removeAccount(message.payload);
+    }
+  }
+
+  function addMessage(message) {
+    const account = accounts.find(x => x.id === message.accountId);
+    $("#messages").append(`<p>${account.nickname}: ${message.text}</p>`);
+  }
+
+  function addAccount(account) {
+    findAccount(account.id).then((response) => {
+      const accountDetails = response.data;
+      accounts.push(accountDetails);
+      $("#accounts").append(`<li id="account-${accountDetails.id}">${accountDetails.nickname}</li>`);
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
+  function removeAccount(account) {
+    const accountIndex = accounts.findIndex(x => x.id === account.id);
+    if (accountIndex !== -1) {
+      accounts.splice(accountIndex, 1);
+      $(`#account-${account.id}`).remove();
+    }
+  }
+
+  function findAccount(account) {
+    return axios.get(`http://localhost:8080/accounts/${account}`, {
+        headers: {
+          "Authorization": `Bearer: ${accessToken}`
+        }
+      }
+    );
+  }
+</script>
+</body>
+
+</html>
