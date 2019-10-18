@@ -1,28 +1,21 @@
 package fi.vamk.vabanque.core.auth.token
 
 import fi.vamk.vabanque.common.utilities.getRandomBase64
+import fi.vamk.vabanque.core.auth.AuthProperties
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import java.util.Date
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
-class TokenService {
-
-  @Value("\${jwt.secret}")
-  private lateinit var secret: String
-
-  @Value("\${jwt.expiration}")
-  private lateinit var expiration: String
-
+class TokenService(private val properties: AuthProperties) {
   fun generateAccess(accountId: Long): String {
     return Jwts.builder()
       .setSubject(accountId.toString())
       .setIssuedAt(Date())
-      .setExpiration(Date(System.currentTimeMillis() + expiration.toInt()))
-      .signWith(SignatureAlgorithm.HS512, secret.toByteArray())
+      .setExpiration(Date(System.currentTimeMillis() + properties.expiration.toInt()))
+      .signWith(SignatureAlgorithm.HS512, properties.secret.toByteArray())
       .compact()
   }
 
@@ -45,7 +38,7 @@ class TokenService {
 
   private fun getClaims(token: String): Claims? {
     return try {
-      Jwts.parser().setSigningKey(secret.toByteArray()).parseClaimsJws(token).body
+      Jwts.parser().setSigningKey(properties.secret.toByteArray()).parseClaimsJws(token).body
     } catch (e: Exception) {
       null
     }

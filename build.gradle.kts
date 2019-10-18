@@ -18,6 +18,7 @@ plugins {
   id("org.jetbrains.kotlin.plugin.jpa") version "1.3.50"
   id("org.flywaydb.flyway") version "6.0.4"
   id("org.jlleitschuh.gradle.ktlint") version "9.0.0"
+  id("org.jetbrains.kotlin.kapt") version "1.3.50"
 }
 
 dependencies {
@@ -25,6 +26,8 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-websocket")
+  kapt("org.springframework.boot:spring-boot-configuration-processor")
+  implementation("org.springframework.boot:spring-boot-configuration-processor")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

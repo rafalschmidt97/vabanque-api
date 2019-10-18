@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vabanque
+    username: postgres
+    password: zaq1@WSX
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL92Dialect
+        jdbc.lob.non_contextual_creation: true
+        ddl-auto: validate
+#    show-sql: true
+  servlet.multipart:
+    file-size-threshold: 2KB
+    max-file-size: 5MB
+    max-request-size: 10MB
+
+vabanque.jwt:
+  secret: vabanquesecret
+  expiration: 300000
