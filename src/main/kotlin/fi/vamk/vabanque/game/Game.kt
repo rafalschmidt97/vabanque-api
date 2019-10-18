@@ -31,19 +31,19 @@ data class ChipProgression(
 
 data class Player(
   val accountId: Long,
-  var admin: Boolean = false,
-  var connected: Boolean = true
+  var isAdmin: Boolean = false,
+  var isConnected: Boolean = true
 ) {
   fun disconnect() {
-    connected = false
-    admin = false
+    isConnected = false
+    isAdmin = false
   }
 
   fun reconnect() {
-    connected = true
+    isConnected = true
   }
 
   fun makeAdmin() {
-    admin = true
+    isAdmin = true
   }
 }

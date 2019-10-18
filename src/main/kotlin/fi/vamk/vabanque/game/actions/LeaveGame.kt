@@ -22,8 +22,8 @@ fun leaveGame(session: WebSocketSession, request: LeaveGameRequest) {
     ?: throw NotFoundException(Player::class, accountId)
 
   if (leavingGame.players.size > 1) {
-    if (leavingPlayer.admin) {
-      val nonAdminOtherPlayer = leavingGame.players.find { it.accountId != accountId && !it.admin }!!
+    if (leavingPlayer.isAdmin) {
+      val nonAdminOtherPlayer = leavingGame.players.find { it.accountId != accountId && !it.isAdmin }!!
       nonAdminOtherPlayer.makeAdmin()
       leavingGame.players.remove(leavingPlayer)
       publishGame(SocketMessage(GameResponseAction.SYNC.type, leavingGame.toResponse()), leavingGame)

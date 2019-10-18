@@ -153,7 +153,7 @@
 
       const selfPlayer = game.players.find(player => player.accountId === selfAccount.id);
 
-      if (selfPlayer.admin) {
+      if (selfPlayer.isAdmin) {
         $("#remove").show();
       } else {
         $("#remove").hide();
@@ -186,7 +186,7 @@
     }
 
     function playerLabel(player, details) {
-      return `${player.connected ? "(ON)" : "(OFF)"} ${details.nickname} ${player.admin ? "(A)" : "(P)"}`;
+      return `${player.isConnected ? "(ON)" : "(OFF)"} ${details.nickname} ${player.isAdmin ? "(A)" : "(P)"}`;
     }
 
     function removePlayer(player) {

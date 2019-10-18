@@ -21,7 +21,7 @@ fun removeGame(session: WebSocketSession, request: RemoveGameRequest) {
   val removingPlayer = removingGame.players.find { it.accountId == accountId }
     ?: throw NotFoundException(Player::class, accountId)
 
-  if (!removingPlayer.admin) {
+  if (!removingPlayer.isAdmin) {
     throw ForbiddenException("${Player::class.simpleName!!}(${removingPlayer.accountId}) is not an admin.")
   }
 

@@ -1,4 +1,5 @@
 package fi.vamk.vabanque.game
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalTime
 
 interface GameMessagePayload {
@@ -18,11 +19,17 @@ fun Game.toResponse() = GameResponse(id, code, duration, entry, progression, pla
 
 data class PlayerResponse(
   val accountId: Long,
-  val admin: Boolean,
-  val connected: Boolean
+
+  @get:JsonProperty("isAdmin")
+  @param:JsonProperty("isAdmin")
+  val isAdmin: Boolean,
+
+  @get:JsonProperty("isConnected")
+  @param:JsonProperty("isConnected")
+  val isConnected: Boolean
 )
 
-fun Player.toResponse() = PlayerResponse(accountId, admin, connected)
+fun Player.toResponse() = PlayerResponse(accountId, isAdmin, isConnected)
 
 data class CreateGameRequest(
   val duration: LocalTime,

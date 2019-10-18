@@ -19,8 +19,8 @@ fun markInAllAsDisconnectedGame(session: WebSocketSession) {
     val disconnectingPlayer = disconnectingGame.players.find { player -> player.accountId == accountId }!!
 
     if (disconnectingGame.players.size > 1) {
-      if (disconnectingPlayer.admin) {
-        val nonAdminOtherPlayer = disconnectingGame.players.find { it.accountId != accountId && !it.admin }!!
+      if (disconnectingPlayer.isAdmin) {
+        val nonAdminOtherPlayer = disconnectingGame.players.find { it.accountId != accountId && !it.isAdmin }!!
         nonAdminOtherPlayer.makeAdmin()
         disconnectingPlayer.disconnect()
         publishGame(SocketMessage(GameResponseAction.SYNC.type, disconnectingGame.toResponse()), disconnectingGame)
