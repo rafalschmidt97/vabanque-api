@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
+</head>
+
+<body>
+<div class="container py-3">
+  <div class="row">
+    <div class="col-7">
+      <ul id="game-info"></ul>
+    </div>
+    <div class="col-5">
+      <ul id="players"></ul>
+    </div>
+  </div>
+  <div>
+    <button type="button" class="btn btn-primary" id="leave">
+      Leave
+    </button>
+    <button type="button" class="btn btn-secondary" id="sync">
+      Sync
+    </button>
+    <button type="button" class="btn btn-danger" id="remove" style="display: none">
+      Remove
+    </button>
+  </div>
+</div>
+
+<script>
+  (async () => {
+    let accessToken = "";
+    while (accessToken === "") accessToken = prompt("Please pass your access token");
+
+    const socket = new SockJS(`http://localhost:8080/game?access_token=${accessToken}`);
+
+    socket.onopen = () => {
+      console.log("Connected");
+
+      if (confirm("Do you want to create a game?")) {
+        sendAction("create", {
+          duration: "00:05:00",
+          entry: "1€",
+          progression: [{small: 5, big: 10}, {small: 10, big: 25}, {small: 25, big: 50}, {small: 50, big: 100}]
+        })
+      } else {
+        let code = "";
+        while (code === "") code = prompt("Please pass code for the game");
+        sendAction("join", {code})
+      }
+    };
+
+    socket.onclose = error => {
+      console.log(error);
+      alert("Disconnected")
+    };
+
+    socket.onmessage = message => {
+      actionHandler(JSON.parse(message.data))
+    };
+
+    let gameState = null;
+    const selfAccount = await findPlayerDetails("self");
+
+    $("#leave").click(() => {
+      sendAction("leave", {gameId: gameState.gameId});
+    });
+
+    $("#sync").click(() => {
+      sendAction("sync", {gameId: gameState.gameId});
+    });
+
+    $("#remove").click(() => {
+      sendAction("remove", {gameId: gameState.gameId});
+    });
+
+    function sendAction(type, payload) {
+      if (type !== "" && payload !== "") {
+        socket.send(JSON.stringify({type: type, payload: payload}));
+      }
+    }
+
+    function actionHandler(message) {
+      switch (message.type) {
+        case "created_confirm":
+          renderGame(message.payload);
+          break;
+        case "joined":
+          addPlayer(message.payload);
+          break;
+        case "joined_confirm":
+          renderGame(message.payload);
+          break;
+        case "left":
+          removePlayer(message.payload);
+          break;
+        case "left_confirm":
+          alert("You left the game. Refresh to start again.");
+          break;
+        case "disconnected":
+          rerenderPlayer(message.payload);
+          break;
+        case "reconnected":
+          rerenderPlayer(message.payload);
+          break;
+        case "removed":
+          alert("Admin removed the game. Refresh to start again.");
+          break;
+        case "removed_confirm":
+          alert("You removed the game. Refresh to start again.");
+          break;
+        case "sync":
+          renderGame(message.payload);
+          break;
+        case "error":
+          console.log(message.payload);
+          alert(`Error: ${message.payload.message}`);
+          break;
+      }
+    }
+
+    function renderGame(game) {
+      console.log(game);
+      gameState = game;
+
+      $("#game-info").empty();
+      $("#players").empty();
+
+      $("#game-info")
+        .append(`<li>GameId: ${game.gameId}</li>`)
+        .append(`<li>Code: ${game.code}</li>`)
+        .append(`<li>Duration: ${game.duration.toString()}</li>`)
+        .append(`<li>Entry: ${game.entry}</li>`)
+        .append(`<li>Progression: <ul id="game-info-progression"></ul></li>`);
+
+      game.progression.forEach(progression => {
+        $("#game-info-progression").append(`<li>Small: ${progression.small}, Big: Small: ${progression.big}</li>`)
+      });
+
+      game.players.forEach(player => {
+        renderPlayer(player);
+      });
+
+      const selfPlayer = game.players.find(player => player.accountId === selfAccount.id);
+
+      if (selfPlayer.admin) {
+        $("#remove").show();
+      } else {
+        $("#remove").hide();
+      }
+    }
+
+    function renderPlayer(player) {
+      findPlayerDetails(player.accountId).then(details => {
+        $("#players").append(`<li id="player-${player.accountId}">${playerLabel(player, details)}</li>`);
+      }).catch(error => {
+        console.log(error);
+      })
+    }
+
+    function addPlayer(player) {
+      gameState.players.push(player);
+      renderPlayer(player);
+    }
+
+    function rerenderPlayer(player) {
+      const playerIndex = gameState.players.findIndex(x => x.accountId === player.accountId);
+      if (playerIndex !== -1) {
+        findPlayerDetails(player.accountId).then(details => {
+          gameState.players[playerIndex] = player;
+          $(`#player-${player.accountId}`).html(playerLabel(player, details));
+        }).catch(error => {
+          console.log(error);
+        })
+      }
+    }
+
+    function playerLabel(player, details) {
+      return `${player.connected ? "(ON)" : "(OFF)"} ${details.nickname} ${player.admin ? "(A)" : "(P)"}`;
+    }
+
+    function removePlayer(player) {
+      const playerIndex = gameState.players.findIndex(x => x.accountId === player.accountId);
+      if (playerIndex !== -1) {
+        gameState.players.splice(playerIndex, 1);
+        $(`#player-${player.accountId}`).remove();
+      }
+    }
+
+    function findPlayerDetails(account) {
+      return axios.get(`http://localhost:8080/accounts/${account}`, {
+          headers: {
+            "Authorization": `Bearer: ${accessToken}`
+          }
+        }
+      ).then(response => response.data);
+    }
+  })();
+</script>
+</body>
+
+</html>
