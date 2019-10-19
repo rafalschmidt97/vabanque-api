@@ -6,6 +6,10 @@ enum class GameRequestAction(val type: String) {
   LEAVE("leave"),
   SYNC("sync"),
   REMOVE("remove"),
+  START("start"),
+  PAUSE("pause"),
+  RESUME("resume"),
+  RAISE("raise"),
 }
 
 enum class GameResponseAction(val type: String) {
@@ -19,4 +23,8 @@ enum class GameResponseAction(val type: String) {
   REMOVED("removed"),
   REMOVED_CONFIRM("removed_confirm"),
   SYNC("sync"),
+  STARTED("started"),
+  PAUSED("paused"),
+  RESUMED("resumed"),
+  RAISED("raised"),
 }

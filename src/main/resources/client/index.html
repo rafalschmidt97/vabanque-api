@@ -34,6 +34,18 @@
     <button type="button" class="btn btn-danger" id="remove" style="display: none">
       Remove
     </button>
+    <button type="button" class="btn btn-success" id="start" style="display: none">
+      Start
+    </button>
+    <button type="button" class="btn btn-warning" id="pause" style="display: none">
+      Pause
+    </button>
+    <button type="button" class="btn btn-warning" id="resume" style="display: none">
+      Resume
+    </button>
+    <button type="button" class="btn btn-info" id="raise" style="display: none">
+      Raise
+    </button>
   </div>
 </div>
 
@@ -84,6 +96,22 @@
       sendAction("remove", {gameId: gameState.gameId});
     });
 
+    $("#start").click(() => {
+      sendAction("start", {gameId: gameState.gameId});
+    });
+
+    $("#pause").click(() => {
+      sendAction("pause", {gameId: gameState.gameId});
+    });
+
+    $("#resume").click(() => {
+      sendAction("resume", {gameId: gameState.gameId});
+    });
+
+    $("#raise").click(() => {
+      sendAction("raise", {gameId: gameState.gameId});
+    });
+
     function sendAction(type, payload) {
       if (type !== "" && payload !== "") {
         socket.send(JSON.stringify({type: type, payload: payload}));
@@ -96,22 +124,22 @@
           renderGame(message.payload);
           break;
         case "joined":
-          addPlayer(message.payload);
+          addPlayer(message.payload.player);
           break;
         case "joined_confirm":
           renderGame(message.payload);
           break;
         case "left":
-          removePlayer(message.payload);
+          removePlayer(message.payload.player);
           break;
         case "left_confirm":
           alert("You left the game. Refresh to start again.");
           break;
         case "disconnected":
-          rerenderPlayer(message.payload);
+          rerenderPlayer(message.payload.player);
           break;
         case "reconnected":
-          rerenderPlayer(message.payload);
+          rerenderPlayer(message.payload.player);
           break;
         case "removed":
           alert("Admin removed the game. Refresh to start again.");
@@ -121,6 +149,18 @@
           break;
         case "sync":
           renderGame(message.payload);
+          break;
+        case "started":
+          startGame(message.payload);
+          break;
+        case "paused":
+          pauseGame(message.payload);
+          break;
+        case "resumed":
+          resumeGame(message.payload);
+          break;
+        case "raised":
+          raiseGame(message.payload.progression);
           break;
         case "error":
           console.log(message.payload);
@@ -141,7 +181,9 @@
         .append(`<li>Code: ${game.code}</li>`)
         .append(`<li>Duration: ${game.duration.toString()}</li>`)
         .append(`<li>Entry: ${game.entry}</li>`)
-        .append(`<li>Progression: <ul id="game-info-progression"></ul></li>`);
+        .append(`<li id="game-info-status">Status: ${game.status}</li>`)
+        .append(`<li>Progression: <ul id="game-info-progression"></ul></li>`)
+        .append(`<li id="game-info-current-progression">Current progression: ${game.currentProgression.small} / ${game.currentProgression.big}</li>`);
 
       game.progression.forEach(progression => {
         $("#game-info-progression").append(`<li>Small: ${progression.small}, Big: Small: ${progression.big}</li>`)
@@ -157,6 +199,35 @@
         $("#remove").show();
       } else {
         $("#remove").hide();
+      }
+
+      if (game.status === "playing") {
+        $("#start").hide();
+        $("#pause").show();
+        $("#resume").hide();
+        if (selfPlayer.isAdmin) {
+          $("#raise").show();
+        } else {
+          $("#raise").hide();
+        }
+      } else if (game.status === "paused") {
+        $("#start").hide();
+        $("#pause").hide();
+        if (selfPlayer.isAdmin) {
+          $("#resume").show();
+        } else {
+          $("#resume").hide();
+        }
+        $("#raise").hide();
+      } else {
+        if (selfPlayer.isAdmin) {
+          $("#start").show();
+        } else {
+          $("#start").hide();
+        }
+        $("#pause").hide();
+        $("#resume").hide();
+        $("#raise").hide();
       }
     }
 
@@ -195,6 +266,33 @@
         gameState.players.splice(playerIndex, 1);
         $(`#player-${player.accountId}`).remove();
       }
+    }
+
+    function startGame(payload) {
+      console.log(payload);
+      alert("Game started!");
+      gameState.status = "playing";
+      renderGame(gameState)
+    }
+
+    function pauseGame(payload) {
+      console.log(payload);
+      alert("Game paused!");
+      gameState.status = "paused";
+      renderGame(gameState)
+    }
+
+    function resumeGame(payload) {
+      console.log(payload);
+      alert("Game resumed!");
+      gameState.status = "playing";
+      renderGame(gameState)
+    }
+
+    function raiseGame(progression) {
+      alert("Game raised!");
+      gameState.currentProgression = progression;
+      renderGame(gameState)
     }
 
     function findPlayerDetails(account) {
