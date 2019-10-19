@@ -1,41 +1,48 @@
 package fi.vamk.vabanque.game.actions
 
-import fi.vamk.vabanque.common.exceptions.NotFoundException
 import fi.vamk.vabanque.core.socket.SocketMessage
-import fi.vamk.vabanque.core.socket.getAccountId
 import fi.vamk.vabanque.core.socket.publish
-import fi.vamk.vabanque.game.Game
+import fi.vamk.vabanque.game.GameMessagePayload
 import fi.vamk.vabanque.game.GameResponseAction
-import fi.vamk.vabanque.game.JoinGameRequest
 import fi.vamk.vabanque.game.Player
-import fi.vamk.vabanque.game.findGameByCode
+import fi.vamk.vabanque.game.PlayerResponse
+import fi.vamk.vabanque.game.findGameByCodeOrThrow
+import fi.vamk.vabanque.game.findPlayerInGameBySession
 import fi.vamk.vabanque.game.publishGameExcludeSelf
 import fi.vamk.vabanque.game.toResponse
 import org.springframework.web.socket.WebSocketSession
 
+data class JoinGameRequest(
+  val code: String
+)
+
+data class JoinedGameResponse(
+  override val gameId: String,
+  val player: PlayerResponse
+) : GameMessagePayload
+
 fun joinGame(session: WebSocketSession, request: JoinGameRequest) {
-  val joiningGame = findGameByCode(request.code) ?: throw NotFoundException(Game::class, request.code)
-  val accountId = session.getAccountId()
-  var player = joiningGame.players.find { it.accountId == accountId }
+  val game = findGameByCodeOrThrow(request.code)
+  var (player, accountId) = findPlayerInGameBySession(session, game)
 
   if (player == null) {
     player = Player(accountId)
-    joiningGame.players.add(player)
+    game.players.add(player)
 
     publishGameExcludeSelf(
-      SocketMessage(GameResponseAction.JOINED.type, player.toResponse()),
-      joiningGame,
+      SocketMessage(GameResponseAction.JOINED.type, JoinedGameResponse(game.id, player.toResponse())),
+      game,
       session
     )
   } else {
     player.reconnect()
 
     publishGameExcludeSelf(
-      SocketMessage(GameResponseAction.RECONNECTED.type, player.toResponse()),
-      joiningGame,
+      SocketMessage(GameResponseAction.RECONNECTED.type, JoinedGameResponse(game.id, player.toResponse())),
+      game,
       session
     )
   }
 
-  session.publish(SocketMessage(GameResponseAction.JOINED_CONFIRM.type, joiningGame.toResponse()))
+  session.publish(SocketMessage(GameResponseAction.JOINED_CONFIRM.type, game.toResponse()))
 }
