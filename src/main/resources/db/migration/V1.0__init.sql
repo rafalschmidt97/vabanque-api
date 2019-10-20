@@ -16,3 +16,12 @@ create table refresh_token
     token      varchar(50) not null,
     account_id int8        not null references account (id) on delete cascade
 );
+
+create table debtor
+(
+    id                  bigserial   not null primary key,
+    amount              varchar(30) not null,
+    created_at          timestamp   not null,
+    creditor_account_id int8        not null references account (id) on delete cascade,
+    debtor_account_id   int8        not null references account (id) on delete cascade
+);
