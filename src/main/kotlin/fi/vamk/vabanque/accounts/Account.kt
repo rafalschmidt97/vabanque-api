@@ -1,5 +1,6 @@
 package fi.vamk.vabanque.accounts
 
+import java.util.Date
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -24,7 +25,10 @@ data class Account(
   var phoneNumber: String? = null,
 
   @Column(length = 2048)
-  var avatar: String? = null
+  var avatar: String? = null,
+
+  @Column(nullable = false)
+  var createdAt: Date = Date()
 ) {
   constructor(email: String, password: String) : this(id = 0, email = email, password = password)
 

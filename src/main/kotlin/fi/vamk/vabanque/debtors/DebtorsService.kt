@@ -14,12 +14,12 @@ class DebtorsService(
 ) {
 
   fun findDebtorPage(creditorAccountId: Long, page: Int): List<DebtorResponse> {
-    return debtorsRepository.findByCreditorAccountId(creditorAccountId, showPage(page))
+    return debtorsRepository.findByCreditorAccountIdAndIsRemovedFalse(creditorAccountId, showPage(page))
       .map { it.toDebtorResponse() }
   }
 
   fun findCreditorPage(debtorAccountId: Long, page: Int): List<DebtorResponse> {
-    return debtorsRepository.findByDebtorAccountId(debtorAccountId, showPage(page))
+    return debtorsRepository.findByDebtorAccountIdAndIsRemovedFalse(debtorAccountId, showPage(page))
       .map { it.toCreditorResponse() }
   }
 
@@ -37,7 +37,7 @@ class DebtorsService(
   }
 
   fun remove(id: Long, creditorAccountId: Long) {
-    val debtor = debtorsRepository.findById(id)
+    val debtor = debtorsRepository.findByIdAndIsRemovedFalse(id)
       ?: throw NotFoundException(Debtor::class, id)
 
     if (debtor.creditorAccountId != creditorAccountId) {
@@ -46,6 +46,7 @@ class DebtorsService(
       )
     }
 
-    debtorsRepository.deleteById(debtor.id)
+    debtor.remove()
+    debtorsRepository.save(debtor)
   }
 }

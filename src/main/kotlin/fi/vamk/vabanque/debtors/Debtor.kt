@@ -1,6 +1,7 @@
 package fi.vamk.vabanque.debtors
 
 import fi.vamk.vabanque.accounts.Account
+import fi.vamk.vabanque.common.exceptions.ConflictException
 import java.util.Date
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -26,7 +27,13 @@ data class Debtor(
   var amount: String,
 
   @Column(nullable = false)
-  var createdAt: Date,
+  var createdAt: Date = Date(),
+
+  @Column
+  var isRemoved: Boolean = false,
+
+  @Column
+  var removedAt: Date? = null,
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "creditor_account_id", insertable = false, updatable = false)
@@ -41,7 +48,15 @@ data class Debtor(
       id = 0,
       creditorAccountId = creditorAccountId,
       debtorAccountId = debtorAccountId,
-      amount = amount,
-      createdAt = Date()
+      amount = amount
     )
+
+  fun remove() {
+    if (isRemoved) {
+      throw ConflictException("${Debtor::class.simpleName!!}($id) is already removed.")
+    }
+
+    isRemoved = true
+    removedAt = Date()
+  }
 }
