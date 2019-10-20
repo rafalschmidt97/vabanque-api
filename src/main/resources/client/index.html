@@ -270,27 +270,23 @@
 
     function startGame(payload) {
       console.log(payload);
-      alert("Game started!");
       gameState.status = "playing";
       renderGame(gameState)
     }
 
     function pauseGame(payload) {
       console.log(payload);
-      alert("Game paused!");
       gameState.status = "paused";
       renderGame(gameState)
     }
 
     function resumeGame(payload) {
       console.log(payload);
-      alert("Game resumed!");
       gameState.status = "playing";
       renderGame(gameState)
     }
 
     function raiseGame(progression) {
-      alert("Game raised!");
       gameState.currentProgression = progression;
       renderGame(gameState)
     }
