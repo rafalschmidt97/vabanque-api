@@ -18,7 +18,7 @@ data class DisconnectedGameResponse(
   val player: PlayerResponse
 ) : GameMessagePayload
 
-fun markInAllAsDisconnectedGame(session: WebSocketSession) {
+fun markInGamesAsDisconnected(session: WebSocketSession) {
   val accountId = session.getAccountId()
   val disconnectingFromGames = findPlayerGames(accountId)
 

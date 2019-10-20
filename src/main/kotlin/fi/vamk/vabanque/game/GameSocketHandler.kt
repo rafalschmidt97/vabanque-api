@@ -6,7 +6,7 @@ import fi.vamk.vabanque.core.socket.SocketMessage
 import fi.vamk.vabanque.game.actions.createGame
 import fi.vamk.vabanque.game.actions.joinGame
 import fi.vamk.vabanque.game.actions.leaveGame
-import fi.vamk.vabanque.game.actions.markInAllAsDisconnectedGame
+import fi.vamk.vabanque.game.actions.markInGamesAsDisconnected
 import fi.vamk.vabanque.game.actions.pauseGame
 import fi.vamk.vabanque.game.actions.raiseGame
 import fi.vamk.vabanque.game.actions.removeGame
@@ -19,7 +19,7 @@ import org.springframework.web.socket.WebSocketSession
 class GameSocketHandler : SocketHandler() {
   override fun afterConnectionClosed(session: WebSocketSession, status: CloseStatus) {
     super.afterConnectionClosed(session, status)
-    markInAllAsDisconnectedGame(session)
+    markInGamesAsDisconnected(session)
   }
 
   override fun handleMessage(session: WebSocketSession, message: SocketMessage) {
