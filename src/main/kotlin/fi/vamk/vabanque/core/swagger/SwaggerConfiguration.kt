@@ -40,6 +40,7 @@ class SwaggerConfiguration {
       "/swagger-resources/**",
       "/configuration/security",
       "/swagger-ui.html**",
-      "/webjars/**")
+      "/webjars/**"
+    )
   }
 }

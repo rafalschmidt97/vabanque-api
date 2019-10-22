@@ -28,7 +28,8 @@ class CustomExceptionHandler {
       ExceptionResponse(
         exception.message ?: HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
       ),
-      exception.status)
+      exception.status
+    )
   }
 
   @ExceptionHandler(value = [(MaxUploadSizeExceededException::class)])
@@ -37,7 +38,8 @@ class CustomExceptionHandler {
       ExceptionResponse(
         "File size exceeded. Maximum is $maxFileSize."
       ),
-      HttpStatus.NOT_ACCEPTABLE)
+      HttpStatus.NOT_ACCEPTABLE
+    )
   }
 
   @ExceptionHandler(value = [(Exception::class)])
@@ -49,6 +51,7 @@ class CustomExceptionHandler {
       ExceptionResponse(
         HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
       ),
-      HttpStatus.INTERNAL_SERVER_ERROR)
+      HttpStatus.INTERNAL_SERVER_ERROR
+    )
   }
 }

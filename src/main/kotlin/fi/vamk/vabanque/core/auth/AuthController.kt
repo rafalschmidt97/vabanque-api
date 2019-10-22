@@ -45,6 +45,7 @@ class AuthController(
     val ignoredPathsInAuth = arrayOf(
       "/auth/sign-in",
       "/auth/sign-up",
-      "/auth/refresh")
+      "/auth/refresh"
+    )
   }
 }
