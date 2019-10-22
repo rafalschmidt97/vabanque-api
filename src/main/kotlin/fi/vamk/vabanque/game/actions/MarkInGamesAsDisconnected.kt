@@ -1,16 +1,16 @@
 package fi.vamk.vabanque.game.actions
 
-import fi.vamk.vabanque.core.socket.SocketMessage
+import fi.vamk.vabanque.core.socket.domain.SocketMessage
 import fi.vamk.vabanque.core.socket.getAccountId
-import fi.vamk.vabanque.game.Game
-import fi.vamk.vabanque.game.GameMessagePayload
 import fi.vamk.vabanque.game.GameResponseAction
 import fi.vamk.vabanque.game.GameState
-import fi.vamk.vabanque.game.PlayerResponse
+import fi.vamk.vabanque.game.domain.Game
+import fi.vamk.vabanque.game.dto.GameMessagePayload
+import fi.vamk.vabanque.game.dto.PlayerResponse
+import fi.vamk.vabanque.game.dto.toResponse
 import fi.vamk.vabanque.game.findPlayerInGame
 import fi.vamk.vabanque.game.findPlayerNonAdminNonSelf
 import fi.vamk.vabanque.game.publishGame
-import fi.vamk.vabanque.game.toResponse
 import org.springframework.web.socket.WebSocketSession
 
 data class DisconnectedGameResponse(
@@ -30,7 +30,12 @@ fun markInGamesAsDisconnected(session: WebSocketSession) {
         val nonAdminOtherPlayer = findPlayerNonAdminNonSelf(disconnectingGame, accountId)!!
         nonAdminOtherPlayer.makeAdmin()
         disconnectingPlayer.disconnect()
-        publishGame(SocketMessage(GameResponseAction.SYNC.type, disconnectingGame.toResponse()), disconnectingGame)
+        publishGame(
+          SocketMessage(
+            GameResponseAction.SYNC.type,
+            disconnectingGame.toResponse()
+          ), disconnectingGame
+        )
       } else {
         disconnectingPlayer.disconnect()
         publishGame(

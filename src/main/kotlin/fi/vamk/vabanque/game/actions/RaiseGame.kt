@@ -1,9 +1,9 @@
 package fi.vamk.vabanque.game.actions
 
-import fi.vamk.vabanque.core.socket.SocketMessage
-import fi.vamk.vabanque.game.GameMessagePayload
-import fi.vamk.vabanque.game.GameProgression
+import fi.vamk.vabanque.core.socket.domain.SocketMessage
 import fi.vamk.vabanque.game.GameResponseAction
+import fi.vamk.vabanque.game.domain.GameProgression
+import fi.vamk.vabanque.game.dto.GameMessagePayload
 import fi.vamk.vabanque.game.publishGame
 import java.util.Date
 import org.springframework.web.socket.WebSocketSession

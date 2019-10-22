@@ -4,6 +4,8 @@ import fi.vamk.vabanque.common.exceptions.CustomException
 import fi.vamk.vabanque.common.utilities.logger
 import fi.vamk.vabanque.core.mapper.Mapper
 import fi.vamk.vabanque.core.socket.SessionState.sessions
+import fi.vamk.vabanque.core.socket.domain.SocketMessage
+import fi.vamk.vabanque.core.socket.domain.SocketSession
 import org.springframework.web.socket.CloseStatus
 import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketSession

@@ -46,6 +46,9 @@
     <button type="button" class="btn btn-info" id="raise" style="display: none">
       Raise
     </button>
+    <button type="button" class="btn btn-primary" id="finish" style="display: none">
+      Finish
+    </button>
   </div>
 </div>
 
@@ -112,6 +115,10 @@
       sendAction("raise", {gameId: gameState.gameId});
     });
 
+    $("#finish").click(() => {
+      sendAction("finish", {gameId: gameState.gameId});
+    });
+
     function sendAction(type, payload) {
       if (type !== "" && payload !== "") {
         socket.send(JSON.stringify({type: type, payload: payload}));
@@ -162,6 +169,15 @@
         case "raised":
           raiseGame(message.payload.progression);
           break;
+        case "finished_confirm":
+          finishGame(message.payload);
+          break;
+        case "finished_wait":
+          finishWaitGame(message.payload);
+          break;
+        case "ranked":
+          rankedGame(message.payload);
+          break;
         case "error":
           console.log(message.payload);
           alert(`Error: ${message.payload.message}`);
@@ -175,6 +191,7 @@
 
       $("#game-info").empty();
       $("#players").empty();
+      $("#game-info-progression").empty();
 
       $("#game-info")
         .append(`<li>GameId: ${game.gameId}</li>`)
@@ -207,8 +224,10 @@
         $("#resume").hide();
         if (selfPlayer.isAdmin) {
           $("#raise").show();
+          $("#finish").show();
         } else {
           $("#raise").hide();
+          $("#finish").hide();
         }
       } else if (game.status === "paused") {
         $("#start").hide();
@@ -219,6 +238,7 @@
           $("#resume").hide();
         }
         $("#raise").hide();
+        $("#finish").hide();
       } else {
         if (selfPlayer.isAdmin) {
           $("#start").show();
@@ -228,6 +248,7 @@
         $("#pause").hide();
         $("#resume").hide();
         $("#raise").hide();
+        $("#finish").hide();
       }
     }
 
@@ -289,6 +310,25 @@
     function raiseGame(progression) {
       gameState.currentProgression = progression;
       renderGame(gameState)
+    }
+
+    function finishGame(payload) {
+      console.log(payload);
+      gameState.status = "finished";
+      renderGame(gameState);
+      sendAction("ranking", {gameId: gameState.gameId, rankedAccountsId: gameState.players.map(x => x.accountId)});
+    }
+
+    function finishWaitGame(payload) {
+      console.log(payload);
+      gameState.status = "finished";
+      renderGame(gameState);
+      alert("Game is finished. Wait for the ranking!");
+    }
+
+    function rankedGame(payload) {
+      console.log(payload);
+      alert("Game ranked!");
     }
 
     function findPlayerDetails(account) {

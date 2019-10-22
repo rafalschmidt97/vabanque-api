@@ -8,4 +8,5 @@ interface DebtorsRepository : Repository<Debtor, Long> {
   fun findByCreditorAccountIdAndIsRemovedFalse(creditorAccountId: Long, page: Pageable): List<Debtor>
   fun findByDebtorAccountIdAndIsRemovedFalse(debtorAccountId: Long, page: Pageable): List<Debtor>
   fun save(debtor: Debtor)
+  fun saveAll(debtors: Iterable<Debtor>)
 }

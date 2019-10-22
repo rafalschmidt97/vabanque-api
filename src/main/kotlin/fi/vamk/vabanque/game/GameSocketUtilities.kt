@@ -2,9 +2,11 @@ package fi.vamk.vabanque.game
 
 import fi.vamk.vabanque.common.exceptions.NotFoundException
 import fi.vamk.vabanque.core.socket.SessionState
-import fi.vamk.vabanque.core.socket.SocketMessage
+import fi.vamk.vabanque.core.socket.domain.SocketMessage
 import fi.vamk.vabanque.core.socket.getAccountId
 import fi.vamk.vabanque.core.socket.publish
+import fi.vamk.vabanque.game.domain.Game
+import fi.vamk.vabanque.game.domain.Player
 import org.springframework.web.socket.WebSocketSession
 
 fun publishGame(message: SocketMessage, game: Game) {

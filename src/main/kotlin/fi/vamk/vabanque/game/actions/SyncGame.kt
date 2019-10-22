@@ -1,10 +1,10 @@
 package fi.vamk.vabanque.game.actions
 
-import fi.vamk.vabanque.core.socket.SocketMessage
+import fi.vamk.vabanque.core.socket.domain.SocketMessage
 import fi.vamk.vabanque.core.socket.publish
-import fi.vamk.vabanque.game.GameMessagePayload
 import fi.vamk.vabanque.game.GameResponseAction
-import fi.vamk.vabanque.game.toResponse
+import fi.vamk.vabanque.game.dto.GameMessagePayload
+import fi.vamk.vabanque.game.dto.toResponse
 import org.springframework.web.socket.WebSocketSession
 
 data class SyncGameRequest(

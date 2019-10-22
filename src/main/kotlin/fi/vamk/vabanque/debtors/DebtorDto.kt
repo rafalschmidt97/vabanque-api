@@ -45,3 +45,12 @@ fun Debtor.toCreditorResponse(): DebtorResponse {
     createdAt
   )
 }
+
+data class RankedDebtorResponse(
+  val id: Long,
+  var creditorAccountId: Long,
+  var debtorAccountId: Long,
+  val createdAt: Date
+)
+
+fun Debtor.toRankedResponse() = RankedDebtorResponse(id, creditorAccountId, debtorAccountId, createdAt)
