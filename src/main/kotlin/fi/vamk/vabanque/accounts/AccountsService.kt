@@ -36,4 +36,8 @@ class AccountsService(
     account.update(request.nickname, request.phoneNumber, request.avatar)
     accountsRepository.save(account)
   }
+
+  fun existsRange(ids: List<Long>): Boolean {
+    return accountsRepository.existsByIdIn(ids)
+  }
 }

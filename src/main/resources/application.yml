@@ -7,7 +7,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL92Dialect
-        jdbc.lob.non_contextual_creation: true
+        jdbc:
+          batch_size: 10
+          lob.non_contextual_creation: true
         ddl-auto: validate
 #    show-sql: true
   servlet.multipart:

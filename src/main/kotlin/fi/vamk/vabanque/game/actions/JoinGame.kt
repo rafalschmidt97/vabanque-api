@@ -1,15 +1,15 @@
 package fi.vamk.vabanque.game.actions
 
-import fi.vamk.vabanque.core.socket.SocketMessage
+import fi.vamk.vabanque.core.socket.domain.SocketMessage
 import fi.vamk.vabanque.core.socket.publish
-import fi.vamk.vabanque.game.GameMessagePayload
 import fi.vamk.vabanque.game.GameResponseAction
-import fi.vamk.vabanque.game.Player
-import fi.vamk.vabanque.game.PlayerResponse
+import fi.vamk.vabanque.game.domain.Player
+import fi.vamk.vabanque.game.dto.GameMessagePayload
+import fi.vamk.vabanque.game.dto.PlayerResponse
+import fi.vamk.vabanque.game.dto.toResponse
 import fi.vamk.vabanque.game.findGameByCodeOrThrow
 import fi.vamk.vabanque.game.findPlayerInGameBySession
 import fi.vamk.vabanque.game.publishGameExcludeSelf
-import fi.vamk.vabanque.game.toResponse
 import org.springframework.web.socket.WebSocketSession
 
 data class JoinGameRequest(
@@ -30,7 +30,10 @@ fun joinGame(session: WebSocketSession, request: JoinGameRequest) {
     game.players.add(player)
 
     publishGameExcludeSelf(
-      SocketMessage(GameResponseAction.JOINED.type, JoinedGameResponse(game.id, player.toResponse())),
+      SocketMessage(
+        GameResponseAction.JOINED.type,
+        JoinedGameResponse(game.id, player.toResponse())
+      ),
       game,
       session
     )
@@ -38,11 +41,19 @@ fun joinGame(session: WebSocketSession, request: JoinGameRequest) {
     player.reconnect()
 
     publishGameExcludeSelf(
-      SocketMessage(GameResponseAction.RECONNECTED.type, JoinedGameResponse(game.id, player.toResponse())),
+      SocketMessage(
+        GameResponseAction.RECONNECTED.type,
+        JoinedGameResponse(game.id, player.toResponse())
+      ),
       game,
       session
     )
   }
 
-  session.publish(SocketMessage(GameResponseAction.JOINED_CONFIRM.type, game.toResponse()))
+  session.publish(
+    SocketMessage(
+      GameResponseAction.JOINED_CONFIRM.type,
+      game.toResponse()
+    )
+  )
 }

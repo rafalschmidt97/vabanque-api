@@ -10,6 +10,8 @@ enum class GameRequestAction(val type: String) {
   PAUSE("pause"),
   RESUME("resume"),
   RAISE("raise"),
+  FINISH("finish"),
+  RANK("ranking"),
 }
 
 enum class GameResponseAction(val type: String) {
@@ -27,4 +29,7 @@ enum class GameResponseAction(val type: String) {
   PAUSED("paused"),
   RESUMED("resumed"),
   RAISED("raised"),
+  FINISHED_CONFIRM("finished_confirm"),
+  FINISHED_WAIT("finished_wait"),
+  RANKED("ranked"),
 }

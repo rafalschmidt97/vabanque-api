@@ -1,9 +1,9 @@
 package fi.vamk.vabanque.game.actions
 
 import fi.vamk.vabanque.common.exceptions.ForbiddenException
-import fi.vamk.vabanque.game.Game
-import fi.vamk.vabanque.game.GameMessagePayload
-import fi.vamk.vabanque.game.Player
+import fi.vamk.vabanque.game.domain.Game
+import fi.vamk.vabanque.game.domain.Player
+import fi.vamk.vabanque.game.dto.GameMessagePayload
 import fi.vamk.vabanque.game.findGameByIdOrThrow
 import fi.vamk.vabanque.game.findPlayerInGameBySessionOrThrow
 import org.springframework.web.socket.WebSocketSession

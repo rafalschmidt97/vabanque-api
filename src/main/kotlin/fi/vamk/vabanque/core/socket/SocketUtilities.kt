@@ -4,6 +4,7 @@ import fi.vamk.vabanque.common.exceptions.CustomException
 import fi.vamk.vabanque.core.auth.security.SecurityAccount
 import fi.vamk.vabanque.core.exceptions.HttpExceptionResponse
 import fi.vamk.vabanque.core.mapper.Mapper
+import fi.vamk.vabanque.core.socket.domain.SocketMessage
 import java.util.logging.Logger
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
