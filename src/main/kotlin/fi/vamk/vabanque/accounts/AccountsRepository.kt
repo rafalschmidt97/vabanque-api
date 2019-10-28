@@ -9,6 +9,6 @@ interface AccountsRepository : Repository<Account, Long> {
   fun findByNicknameContainingIgnoreCase(nickname: String, page: Pageable): List<Account>
   fun existsByNickname(nickname: String): Boolean
   fun existsByEmail(email: String): Boolean
-  fun existsByIdIn(ids: Iterable<Long>): Boolean
+  fun existsByIdIn(ids: List<Long>): Boolean
   fun save(account: Account)
 }
