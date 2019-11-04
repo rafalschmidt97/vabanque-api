@@ -29,7 +29,7 @@ class AccountsService(
     val account = accountsRepository.findById(request.id)
       ?: throw NotFoundException(Account::class, request.id)
 
-    if (accountsRepository.existsByNickname(request.nickname)) {
+    if (accountsRepository.existsByNicknameAndIdNot(request.nickname, request.id)) {
       throw ConflictException.alreadyExists(Account::class, "nickname=${request.nickname}")
     }
 
