@@ -20,7 +20,10 @@ fun WebSocketSession.publishCustomError(e: CustomException) {
   publish(
     SocketMessage(
       SocketAction.ERROR.type,
-      HttpExceptionResponse(e.message ?: HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase, e.status.value())
+      HttpExceptionResponse(
+        e.type,
+        e.message ?: HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase,
+        e.status.value())
     )
   )
 }
@@ -32,7 +35,10 @@ fun WebSocketSession.publishError(e: Exception, logger: Logger) {
   publish(
     SocketMessage(
       SocketAction.ERROR.type,
-      HttpExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase, HttpStatus.INTERNAL_SERVER_ERROR.value())
+      HttpExceptionResponse(
+        HttpStatus.INTERNAL_SERVER_ERROR.name,
+        HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase,
+        HttpStatus.INTERNAL_SERVER_ERROR.value())
     )
   )
 }

@@ -2,4 +2,4 @@ package fi.vamk.vabanque.common.exceptions
 
 import org.springframework.http.HttpStatus
 
-class UnsupportedMediaTypeException(message: String) : CustomException(message, HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+class UnsupportedMediaTypeException(type: String, message: String) : CustomException(type, message, HttpStatus.UNSUPPORTED_MEDIA_TYPE)

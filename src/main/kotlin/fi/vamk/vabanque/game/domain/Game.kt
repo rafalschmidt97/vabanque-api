@@ -43,11 +43,11 @@ data class Game(
 
   fun start() {
     if (status != GameStatus.IN_LOBBY) {
-      throw ConflictException("${Game::class.simpleName!!}($id) is already started.")
+      throw ConflictException("GAME_ALREADY_STARTED", "${Game::class.simpleName!!}($id) is already started.")
     }
 
     if (players.size == 1) {
-      throw ConflictException("${Game::class.simpleName!!}($id) requires at least two players.")
+      throw ConflictException("GAME_REQUIRES_TWO_PLAYERS", "${Game::class.simpleName!!}($id) requires at least two players.")
     }
 
     status = GameStatus.PLAYING
@@ -56,7 +56,7 @@ data class Game(
 
   fun pause() {
     if (status != GameStatus.PLAYING) {
-      throw ConflictException("${Game::class.simpleName!!}($id) is not played.")
+      throw ConflictException("GAME_NOT_PLAYED", "${Game::class.simpleName!!}($id) is not played.")
     }
 
     currentTime.pause()
@@ -65,7 +65,7 @@ data class Game(
 
   fun resume() {
     if (status != GameStatus.PAUSED) {
-      throw ConflictException("${Game::class.simpleName!!} is not paused.")
+      throw ConflictException("GAME_NOT_PAUSED", "${Game::class.simpleName!!} is not paused.")
     }
 
     time.add(GameTime(currentProgression))
@@ -75,7 +75,7 @@ data class Game(
 
   fun raise() {
     if (status != GameStatus.PLAYING) {
-      throw ConflictException("${Game::class.simpleName!!}($id) is not played.")
+      throw ConflictException("GAME_NOT_PLAYED", "${Game::class.simpleName!!}($id) is not played.")
     }
 
     currentTime.pause()
@@ -96,7 +96,7 @@ data class Game(
 
   fun finish() {
     if (status == GameStatus.IN_LOBBY) {
-      throw ConflictException("${Game::class.simpleName!!} is not started.")
+      throw ConflictException("GAME_NOT_STARTED", "${Game::class.simpleName!!} is not started.")
     }
 
     currentTime.pause()
@@ -105,7 +105,7 @@ data class Game(
 
   fun rank(rankedAccountsId: List<Long>): List<Debtor> {
     if (status != GameStatus.FINISHED) {
-      throw ConflictException("${Game::class.simpleName!!} is not finished.")
+      throw ConflictException("GAME_NOT_FINISHED", "${Game::class.simpleName!!} is not finished.")
     }
 
     val debtors = mutableListOf<Debtor>()

@@ -26,6 +26,7 @@ class CustomExceptionHandler {
 
     return ResponseEntity(
       ExceptionResponse(
+        exception.type,
         exception.message ?: HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
       ),
       exception.status
@@ -36,6 +37,7 @@ class CustomExceptionHandler {
   fun handleMaxUploadException(): ResponseEntity<ExceptionResponse> {
     return ResponseEntity(
       ExceptionResponse(
+        HttpStatus.NOT_ACCEPTABLE.name,
         "File size exceeded. Maximum is $maxFileSize."
       ),
       HttpStatus.NOT_ACCEPTABLE
@@ -49,6 +51,7 @@ class CustomExceptionHandler {
 
     return ResponseEntity(
       ExceptionResponse(
+        HttpStatus.INTERNAL_SERVER_ERROR.name,
         HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase
       ),
       HttpStatus.INTERNAL_SERVER_ERROR

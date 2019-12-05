@@ -53,7 +53,7 @@ data class Debtor(
 
   fun remove() {
     if (isRemoved) {
-      throw ConflictException("${Debtor::class.simpleName!!}($id) is already removed.")
+      throw ConflictException("DEBTOR_ALREADY_REMOVED", "${Debtor::class.simpleName!!}($id) is already removed.")
     }
 
     isRemoved = true

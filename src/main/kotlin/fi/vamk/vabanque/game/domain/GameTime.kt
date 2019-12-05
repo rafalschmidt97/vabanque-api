@@ -13,7 +13,7 @@ data class GameTime(
 
   fun pause() {
     if (pausedAt != null) {
-      throw ConflictException("${Game::class.simpleName!!} is already paused.")
+      throw ConflictException("GAME_ALREADY_PAUSED", "${Game::class.simpleName!!} is already paused.")
     }
 
     pausedAt = Date()
