@@ -13,7 +13,6 @@ data class SignInRequest(
   val password: String
 )
 
-// TODO: use google/facebook for auth
 data class SignUpRequest(
   @NotBlank
   @Size(min = 3, max = 50)
