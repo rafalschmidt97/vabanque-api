@@ -6,7 +6,7 @@ services:
     container_name: "vabanque-postgres"
     image: "postgres:11"
     ports:
-      - "5432:5432"
+      - "5434:5432"
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "zaq1@WSX"
@@ -15,4 +15,4 @@ services:
     container_name: "vabanque-adminer"
     image: "adminer"
     ports:
-      - "5433:8080"
+      - "5435:8080"
