@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/vabanque
+    url: jdbc:postgresql://localhost:5434/vabanque
     username: postgres
     password: zaq1@WSX
   jpa:

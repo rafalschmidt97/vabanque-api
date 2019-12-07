@@ -45,7 +45,7 @@ dependencies {
 }
 
 flyway {
-  url = "jdbc:postgresql://localhost:5432/vabanque"
+  url = "jdbc:postgresql://localhost:5434/vabanque"
   user = "postgres"
   password = "zaq1@WSX"
 }
