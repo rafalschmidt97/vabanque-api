@@ -1,16 +1,15 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5434/vabanque
-    username: postgres
+    url: jdbc:mysql://localhost:3308/vabanque
+    username: root
     password: zaq1@WSX
   jpa:
+    generate-ddl: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL92Dialect
-        jdbc:
-          batch_size: 10
-          lob.non_contextual_creation: true
-        ddl-auto: validate
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        ddl-auto: verify
 #    show-sql: true
   servlet.multipart:
     file-size-threshold: 2KB

@@ -35,7 +35,7 @@ dependencies {
   implementation("io.jsonwebtoken:jjwt:0.+")
   implementation("io.springfox:springfox-swagger-ui:2.9.2")
   implementation("io.springfox:springfox-swagger2:2.9.2")
-  compile("org.postgresql:postgresql")
+  compile("mysql:mysql-connector-java:8+")
   testImplementation("org.springframework:spring-test")
   testImplementation("org.springframework.boot:spring-boot-test")
   testImplementation("org.springframework.boot:spring-boot-test-autoconfigure")
@@ -45,8 +45,8 @@ dependencies {
 }
 
 flyway {
-  url = "jdbc:postgresql://localhost:5434/vabanque"
-  user = "postgres"
+  url = "jdbc:mysql://localhost:3308/vabanque"
+  user = "root"
   password = "zaq1@WSX"
 }
 
