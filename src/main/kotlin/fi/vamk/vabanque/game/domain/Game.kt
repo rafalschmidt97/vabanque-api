@@ -94,7 +94,7 @@ data class Game(
     time.add(GameTime(currentProgression))
   }
 
-  fun finish() {
+  fun rank() {
     if (status == GameStatus.IN_LOBBY) {
       throw ConflictException("GAME_NOT_STARTED", "${Game::class.simpleName!!} is not started.")
     }
@@ -103,7 +103,7 @@ data class Game(
     status = GameStatus.FINISHED
   }
 
-  fun rank(rankedAccountsId: List<Long>): List<Debtor> {
+  fun finish(rankedAccountsId: List<Long>): List<Debtor> {
     if (status != GameStatus.FINISHED) {
       throw ConflictException("GAME_NOT_FINISHED", "${Game::class.simpleName!!} is not finished.")
     }

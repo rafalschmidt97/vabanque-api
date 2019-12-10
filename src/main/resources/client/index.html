@@ -169,14 +169,14 @@
         case "raised":
           raiseGame(message.payload.progression);
           break;
-        case "finished_confirm":
+        case "ranked_confirm":
           finishGame(message.payload);
           break;
-        case "finished_wait":
+        case "ranked_wait":
           finishWaitGame(message.payload);
           break;
-        case "ranked":
-          rankedGame(message.payload);
+        case "finished":
+          finishedGame(message.payload);
           break;
         case "error":
           console.log(message.payload);
@@ -316,7 +316,7 @@
       console.log(payload);
       gameState.status = "finished";
       renderGame(gameState);
-      sendAction("ranking", {gameId: gameState.gameId, rankedAccountsId: gameState.players.map(x => x.accountId)});
+      sendAction("finish", {gameId: gameState.gameId, rankedAccountsId: gameState.players.map(x => x.accountId)});
     }
 
     function finishWaitGame(payload) {
@@ -326,7 +326,7 @@
       alert("Game is finished. Wait for the ranking!");
     }
 
-    function rankedGame(payload) {
+    function finishedGame(payload) {
       console.log(payload);
       alert("Game ranked!");
     }
