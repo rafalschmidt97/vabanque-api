@@ -35,7 +35,7 @@ fun joinGame(session: WebSocketSession, request: JoinGameRequest) {
 
       publishGameExcludeSelf(
         SocketMessage(
-          GameResponseAction.JOINED.type,
+          GameResponseAction.PLAYER_JOINED.type,
           JoinedGameResponse(game.id, player.toResponse())
         ),
         game,
@@ -46,7 +46,7 @@ fun joinGame(session: WebSocketSession, request: JoinGameRequest) {
 
       publishGameExcludeSelf(
         SocketMessage(
-          GameResponseAction.RECONNECTED.type,
+          GameResponseAction.PLAYER_RECONNECTED.type,
           JoinedGameResponse(game.id, player.toResponse())
         ),
         game,

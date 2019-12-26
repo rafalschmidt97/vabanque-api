@@ -40,7 +40,7 @@ fun markInGamesAsDisconnected(session: WebSocketSession) {
         disconnectingPlayer.disconnect()
         publishGame(
           SocketMessage(
-            GameResponseAction.DISCONNECTED.type,
+            GameResponseAction.PLAYER_DISCONNECTED.type,
             DisconnectedGameResponse(disconnectingGame.id, disconnectingPlayer.toResponse())
           ), disconnectingGame
         )

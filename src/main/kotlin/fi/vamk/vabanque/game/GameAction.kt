@@ -16,12 +16,12 @@ enum class GameRequestAction(val type: String) {
 
 enum class GameResponseAction(val type: String) {
   CREATED_CONFIRM("created_confirm"),
-  JOINED("joined"),
+  PLAYER_JOINED("player_joined"),
   JOINED_CONFIRM("joined_confirm"),
-  LEFT("left"),
+  PLAYER_LEFT("player_left"),
   LEFT_CONFIRM("left_confirm"),
-  DISCONNECTED("disconnected"),
-  RECONNECTED("reconnected"),
+  PLAYER_DISCONNECTED("player_disconnected"),
+  PLAYER_RECONNECTED("player_reconnected"),
   REMOVED("removed"),
   REMOVED_CONFIRM("removed_confirm"),
   SYNC("sync"),

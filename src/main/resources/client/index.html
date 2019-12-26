@@ -130,22 +130,22 @@
         case "created_confirm":
           renderGame(message.payload);
           break;
-        case "joined":
+        case "player_joined":
           addPlayer(message.payload.player);
           break;
         case "joined_confirm":
           renderGame(message.payload);
           break;
-        case "left":
+        case "player_left":
           removePlayer(message.payload.player);
           break;
         case "left_confirm":
           alert("You left the game. Refresh to start again.");
           break;
-        case "disconnected":
+        case "player_disconnected":
           rerenderPlayer(message.payload.player);
           break;
-        case "reconnected":
+        case "player_reconnected":
           rerenderPlayer(message.payload.player);
           break;
         case "removed":

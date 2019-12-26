@@ -53,7 +53,7 @@ fun leaveGame(session: WebSocketSession, request: LeaveGameRequest) {
         game.players.remove(player)
         publishGame(
           SocketMessage(
-            GameResponseAction.LEFT.type,
+            GameResponseAction.PLAYER_LEFT.type,
             LeftGameResponse(game.id, player.toResponse())
           ), game
         )
