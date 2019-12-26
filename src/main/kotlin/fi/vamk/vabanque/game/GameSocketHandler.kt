@@ -62,10 +62,10 @@ class GameSocketHandler(
         raiseGame(session, payloadToObject(message.payload))
       }
       GameRequestAction.FINISH.type -> {
-        rankGame(session, payloadToObject(message.payload))
+        finishGame(session, payloadToObject(message.payload), accountsService, debtorsService)
       }
       GameRequestAction.RANK.type -> {
-        finishGame(session, payloadToObject(message.payload), accountsService, debtorsService)
+        rankGame(session, payloadToObject(message.payload))
       }
       else -> {
         throw BadRequestException("Action type not found.")
