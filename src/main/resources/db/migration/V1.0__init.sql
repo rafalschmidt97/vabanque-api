@@ -17,7 +17,7 @@ create table debtor
     debtor_account_id   bigint      not null,
     amount              varchar(30) not null,
     created_at          datetime(6) not null default current_timestamp(6),
-    is_removed          bit,
+    is_removed          bit(1)      not null default 0,
     removed_at          datetime(6),
     primary key (id),
     foreign key (creditor_account_id) references account (id) on delete cascade,
