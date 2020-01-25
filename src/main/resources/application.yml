@@ -7,7 +7,7 @@ spring:
     generate-ddl: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
         ddl-auto: verify
 #    show-sql: true

@@ -11,6 +11,7 @@ repositories {
 }
 
 plugins {
+  id("war")
   id("org.springframework.boot") version "2.2.0.RC1"
   id("io.spring.dependency-management") version "1.0.8.RELEASE"
   id("org.jetbrains.kotlin.jvm") version "1.3.50"
@@ -27,6 +28,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-websocket")
   compile("org.springframework.boot:spring-boot-starter-actuator")
+  providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
   kapt("org.springframework.boot:spring-boot-configuration-processor")
   implementation("org.springframework.boot:spring-boot-configuration-processor")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -36,7 +38,7 @@ dependencies {
   implementation("io.jsonwebtoken:jjwt:0.+")
   implementation("io.springfox:springfox-swagger-ui:2.9.2")
   implementation("io.springfox:springfox-swagger2:2.9.2")
-  compile("mysql:mysql-connector-java:8+")
+  compile("mysql:mysql-connector-java:6.+")
   testImplementation("org.springframework:spring-test")
   testImplementation("org.springframework.boot:spring-boot-test")
   testImplementation("org.springframework.boot:spring-boot-test-autoconfigure")
