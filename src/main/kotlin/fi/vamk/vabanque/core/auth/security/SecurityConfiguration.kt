@@ -25,7 +25,8 @@ class SecurityConfiguration(private val tokenService: TokenService) : WebSecurit
       .authorizeRequests()
       .antMatchers(
         *AuthController.ignoredPathsInAuth,
-        *SwaggerConfiguration.ignoredPathsInAuth
+        *SwaggerConfiguration.ignoredPathsInAuth,
+        "/actuator/**"
       ).permitAll()
       .anyRequest().authenticated()
 
