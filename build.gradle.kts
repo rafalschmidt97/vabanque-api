@@ -4,6 +4,10 @@ group = "fi.vamk"
 version = "1.0.0"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
+application {
+  mainClassName = "fi.vamk.vabanque.VabanqueApplication"
+}
+
 repositories {
   mavenCentral()
   maven { url = uri("https://repo.spring.io/milestone") }
@@ -12,6 +16,7 @@ repositories {
 
 plugins {
   id("war")
+  id("application")
   id("org.springframework.boot") version "2.2.0.RC1"
   id("io.spring.dependency-management") version "1.0.8.RELEASE"
   id("org.jetbrains.kotlin.jvm") version "1.3.50"
@@ -65,4 +70,8 @@ tasks.withType<KotlinCompile> {
     freeCompilerArgs = listOf("-Xjsr305=strict")
     jvmTarget = "1.8"
   }
+}
+
+tasks.bootWar {
+  archiveFileName.set("vabanque.war")
 }

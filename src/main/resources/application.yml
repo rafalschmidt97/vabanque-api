@@ -1,8 +1,13 @@
+server:
+  port: 8080
+
 spring:
   datasource:
     url: jdbc:mysql://localhost:3308/vabanque
     username: root
     password: zaq1@WSX
+    hikari:
+      maximum-pool-size: 2
   jpa:
     generate-ddl: true
     properties:
